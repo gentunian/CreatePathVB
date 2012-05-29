@@ -60,7 +60,7 @@ End Function
 ' The above solution (it leaks) stops when a directory path exists, and starts building the solution.
 ' Maybe improving some strings functions and freeing FileSystemObject memory the solutions is _better_ in terms
 ' of complexity, but I stick with this one in real life.
-Function CreatePath2(ByVal path As String) As Boolean
+Sub CreatePath2(ByVal path As String)
         Dim fso As Scripting.FileSystemObject
         Dim splitPath() As String = Split(path, "\")
         Dim folder As String = splitPath(0)
@@ -73,5 +73,4 @@ Function CreatePath2(ByVal path As String) As Boolean
             folder = folder & "\" & splitPath(i)
         Next i
         fso = Nothing
-        CreatePath2 = True
-End Function
+End Sub
