@@ -67,10 +67,10 @@ Sub CreatePath2(ByVal path As String)
         Dim i As Integer
         fso = New Scripting.FileSystemObject
         For i = 1 To splitPath.Length - 1
+            folder = folder & "\" & splitPath(i)
             If Not fso.FolderExists(folder) Then
                 fso.CreateFolder(folder)
             End If
-            folder = folder & "\" & splitPath(i)
         Next i
         fso = Nothing
 End Sub
