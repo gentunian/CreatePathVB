@@ -52,3 +52,26 @@ Private Function CreatePath(ByVal lPath As String, Optional ByVal rPath As Strin
         End If
     End If
 End Function
+
+' This is a straightforward solution. It builds the solution up, from the first directory until the last one.
+' It creates an array of "directories" and starts concatenating each directory building it if necessary.
+' It does not instantiates a FileSystemObject each time. Only 1 FileSystemObject is created instead.
+' The only difference remains that all the directories are treated no matter if they exist or not.
+' The above solution (it leaks) stops when a directory path exists, and starts building the solution.
+' Maybe improving some strings functions and freeing FileSystemObject memory the solutions is _better_ in terms
+' of complexity, but I stick with this one in real life.
+Function CreatePath2(ByVal path As String) As Boolean
+        Dim fso As Scripting.FileSystemObject
+        Dim splitPath() As String = Split(path, "\")
+        Dim folder As String = splitPath(0)
+        Dim i As Integer
+        fso = New Scripting.FileSystemObject
+        For i = 1 To splitPath.Length - 1
+            If Not fso.FolderExists(folder) Then
+                fso.CreateFolder(folder)
+            End If
+            folder = folder & "\" & splitPath(i)
+        Next i
+        fso = Nothing
+        CreatePath2 = True
+End Function
